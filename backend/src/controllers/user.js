@@ -32,7 +32,7 @@ const login = async(req, res) => {
                 secure: true,
                 maxAge: 3600000, // 1 hour
                 sameSite: 'none',
-                domain: 'videxify-videoconferencingapp-1.onrender.com'
+                domain: '.onrender.com'
             });
 
             return res.status(httpStatus.OK).json({message: "Login successfull"});
