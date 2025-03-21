@@ -27,9 +27,6 @@ const login = async(req, res) => {
             user.token = token;
             await user.save();
 
-            res.header('Access-Control-Allow-Origin', 'https://videxify-videoconferencingapp-1.onrender.com');
-            res.header('Access-Control-Allow-Credentials', 'true');
-
              res.cookie('token', token, {
                 httpOnly: true,
                 secure: true,
