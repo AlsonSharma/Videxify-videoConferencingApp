@@ -27,15 +27,10 @@ const login = async(req, res) => {
             user.token = token;
             await user.save();
 
-             res.cookie('token', token, {
-                httpOnly: true,
-                secure: true,
-                maxAge: 3600000, // 1 hour
-                sameSite: 'none',
-                domain: '.onrender.com'
-            });
-
-            return res.status(httpStatus.OK).json({message: "Login successfull"});
+            return res.status(httpStatus.OK).json({ 
+                message: "Login successful",
+                token: token // Send token here
+              });
         } else {
             return res.status(httpStatus.UNAUTHORIZED).json({message: "Invalid Username or Password"});
         }
