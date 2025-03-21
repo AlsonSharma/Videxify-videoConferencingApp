@@ -17,8 +17,10 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.set("port", (process.env.PORT || 8000))
 app.use(cors({
-  origin: ["http://localhost:5173", "https://videxify-videoconferencingapp-1.onrender.com/"],
-  credentials: true
+  origin: ["http://localhost:5173", "https://videxify-videoconferencingapp-1.onrender.com"],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 app.use(express.json({limit: "40kb"}));
 app.use(express.urlencoded({limit: "40kb", extended: true}));
