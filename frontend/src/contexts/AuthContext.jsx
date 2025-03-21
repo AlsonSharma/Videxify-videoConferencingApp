@@ -39,8 +39,8 @@ export const AuthProvider = ({children}) => {
                 password: password
             });
 
-            console.log(username, password)
-            console.log(request.data)
+            // console.log(username, password)
+            // console.log(request.data)
 
             if(request.status === httpStatus.OK) {
                 navigate("/home");
