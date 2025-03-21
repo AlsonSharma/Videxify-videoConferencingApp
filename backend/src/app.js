@@ -27,8 +27,7 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRoutes);
 
 const start = async() => {
-    const Db = await mongoose.connect("mongodb+srv://sharmaalson:videoChatAlson123@videochatproject.unqws.mongodb.net/?retryWrites=true&w=majority&appName=videochatProject");
-    // console.log(`Mongo connected : ${Db.connection.host}`);
+    const Db = await mongoose.connect(process.env.MONGO_URI);
     server.listen(app.get("port"), () => {
         console.log("Listening on port 8000");
     })
