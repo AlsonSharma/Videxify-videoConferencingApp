@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import server from "../environment";
 
 const client = axios.create({
-    baseURL: "http://localhost:8000/api/v1/users",
+    baseURL: `${server}api/v1/users`,
     withCredentials: true  // Include cookies in requests
 })
 
