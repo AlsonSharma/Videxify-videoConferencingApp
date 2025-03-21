@@ -29,7 +29,7 @@ const login = async(req, res) => {
 
             res.header('Access-Control-Allow-Origin', 'https://videxify-videoconferencingapp-1.onrender.com');
             res.header('Access-Control-Allow-Credentials', 'true');
-            
+
              res.cookie('token', token, {
                 httpOnly: true,
                 secure: true,
@@ -113,11 +113,16 @@ const addToHistory = async (req, res) => {
 }
 
 const validateSession = (req, res) => {
-    if (req.user) {
-        return res.status(200).json({ message: "Authenticated", user: req.user });
+  
+  return res.status(200).json({ 
+    message: "Authenticated", 
+    user: {
+      id: req.user._id,
+      username: req.user.username,
+      name: req.user.name
     }
-    return res.status(401).json({ message: "Unauthorized" });
-}
+  });
+};
 
 
 export {login, register, validateSession, getUserHistory, addToHistory};
