@@ -31,7 +31,7 @@ const login = async(req, res) => {
                 httpOnly: true,
                 sameSite: 'none',
                 path: '/',
-                domain: 'videxify-videoconferencingapp-1.onrender.com/',
+                domain: 'videxify-videoconferencingapp-1.onrender.com',
                 secure: true,
                 maxAge: 3600000 // 1 hour
             });
