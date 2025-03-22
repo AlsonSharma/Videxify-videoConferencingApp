@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import "../styles/Checkout.css";
 import { TextField } from '@mui/material';
 import Pricing from './Pricing';
+import server from '../environment';
 
 
 const CheckOut = () => {
@@ -24,7 +25,7 @@ const CheckOut = () => {
 
     try {
       // Create payment intent
-      const response = await fetch('http://localhost:8000/create-payment-intent', {
+      const response = await fetch(`${server}/create-payment-intent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount }),
