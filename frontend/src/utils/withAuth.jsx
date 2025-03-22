@@ -4,7 +4,7 @@ import axios from "axios";
 import server from "../environment";
 
 const client = axios.create({
-    baseURL: `${server}api/v1/users`,
+    baseURL: `${server}/api/v1/users`,
     withCredentials: true  // Include cookies in requests
 })
 

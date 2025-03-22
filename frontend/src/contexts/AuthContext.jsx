@@ -9,7 +9,7 @@ export const AuthContext = createContext({});
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-    baseURL: `${server}api/v1/users`,
+    baseURL: `${server}/api/v1/users`,
     withCredentials: true
 })
 
