@@ -88,7 +88,7 @@ function Home() {
             </div>
           </div>
           <div className="heroImage">
-            <img src="../public/homeLogo.png" alt="Video Call Illustration" />
+            <img src="./homeLogo.png" alt="Video Call Illustration" />
           </div>
         </div>
       </div>

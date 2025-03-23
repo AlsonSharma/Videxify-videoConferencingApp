@@ -5,7 +5,7 @@ export default function NotFound() {
     const routeTo = useNavigate()
   return (
     <div>
-        <img src="../../public/NotFound.png" alt="" onClick={() => routeTo("/") }  style={{width: "100%"}}/>
+        <img src="./NotFound.png" alt="" onClick={() => routeTo("/") }  style={{width: "100%"}}/>
 </div>
   )
 }
