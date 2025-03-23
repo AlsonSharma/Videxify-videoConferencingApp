@@ -134,7 +134,9 @@ let getUserMediaSuccess = (stream) => {
     for(let id in connections) {
         if(id === socketIdRef.current) continue;
 
-        connections[id].addTrack(window.localStream)
+       window.localStream.getTracks().forEach(track => {
+    connections[id].addTrack(track, window.localStream);
+  });
 
         connections[id].createOffer().then((description)=> {
             connections[id].setLocalDescription(description)
@@ -232,7 +234,12 @@ let getDisplayMediaSuccess = (stream => {
   for (let id in connections) {
       if(id === socketIdRef.current) continue;
 
-      connections[id].addTrack(window.localStream)
+
+     window.localStream.getTracks().forEach(track => {
+    connections[id].addTrack(track, window.localStream);
+  });
+
+
       connections[id].createOffer().then((description)=> [
           connections[id].setLocalDescription(description)
           .then(() => {
@@ -342,7 +349,10 @@ let connectToSocketServer = () => {
 
               // Add the local video stream
               if (window.localStream !== undefined && window.localStream !== null) {
-                  connections[socketListId].addTrack(window.localStream)
+                window.localStream.getTracks().forEach(track => {
+                  connections[socketListId].addTrack(track, window.localStream);
+                });
+
               } else {
                   let blackSilence = (...args) => new MediaStream([black(...args), silence()])
                   window.localStream = blackSilence()
