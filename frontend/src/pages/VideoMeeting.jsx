@@ -18,8 +18,6 @@ const server_url = server;
 
 var connections = {};
 
-
-
 const peerConfigConnections = {
     "iceServers": [
         {"urls": "stun:stun.l.google.com:19302"}
@@ -136,7 +134,7 @@ let getUserMediaSuccess = (stream) => {
     for(let id in connections) {
         if(id === socketIdRef.current) continue;
 
-        connections[id].addStream(window.localStream)
+        connections[id].addTrack(window.localStream)
 
         connections[id].createOffer().then((description)=> {
             connections[id].setLocalDescription(description)
@@ -162,7 +160,7 @@ let getUserMediaSuccess = (stream) => {
 
         for(let id in connections) {
 
-            connections[id].addStream(window.localStream)
+            connections[id].addTrack(window.localStream)
             connections[id].createOffer()
             .then((description) => {
                 connections[id].setLocalDescription(description)
@@ -234,7 +232,7 @@ let getDisplayMediaSuccess = (stream => {
   for (let id in connections) {
       if(id === socketIdRef.current) continue;
 
-      connections[id].addStream(window.localStream)
+      connections[id].addTrack(window.localStream)
       connections[id].createOffer().then((description)=> [
           connections[id].setLocalDescription(description)
           .then(() => {
@@ -280,7 +278,7 @@ let handleScreen = () => {
 
 // Socket Communication
 let connectToSocketServer = () => {
-  socketRef.current = io.connect(server_url, { secure: false })
+  socketRef.current = io.connect(server_url, { secure: true })
 
   socketRef.current.on('signal', gotMessageFromServer)
 
@@ -306,7 +304,7 @@ let connectToSocketServer = () => {
               }
 
               // Wait for their video stream
-              connections[socketListId].onaddstream = (event) => {
+              connections[socketListId].ontrack = (event) => {
                   // console.log("BEFORE:", videoRef.current);
                   // console.log("FINDING ID: ", socketListId);
 
@@ -344,11 +342,11 @@ let connectToSocketServer = () => {
 
               // Add the local video stream
               if (window.localStream !== undefined && window.localStream !== null) {
-                  connections[socketListId].addStream(window.localStream)
+                  connections[socketListId].addTrack(window.localStream)
               } else {
                   let blackSilence = (...args) => new MediaStream([black(...args), silence()])
                   window.localStream = blackSilence()
-                  connections[socketListId].addStream(window.localStream)
+                  connections[socketListId].addTrack(window.localStream)
               }
           })
 
@@ -357,7 +355,7 @@ let connectToSocketServer = () => {
                   if (id2 === socketIdRef.current) continue
 
                   try {
-                      connections[id2].addStream(window.localStream)
+                      connections[id2].addTrack(window.localStream)
                   } catch (e) { }
 
                   connections[id2].createOffer().then((description) => {
