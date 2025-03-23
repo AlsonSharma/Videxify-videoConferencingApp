@@ -18,9 +18,17 @@ const server_url = server;
 
 var connections = {};
 
+
+
 const peerConfigConnections = {
     "iceServers": [
-        {"urls": "stun:stun.l.google.com:19302"}
+        {"urls": "stun:stun.l.google.com:19302"}, //Stun server
+        {
+          urls: 'turn:relay.metered.ca:443',     // Free TURN server for testing
+          username: 'public',
+          credential: 'public'
+        }
+
     ]
 }
 
@@ -44,7 +52,6 @@ export default function VideoMeeting() {
     const videoRef = useRef([]);
     let[videos, setVideos] = useState([]);
     let routeTo = useNavigate();
-    const remoteStreams = useRef({});
 
 //    if(isChrome() === false) {
 
@@ -135,9 +142,7 @@ let getUserMediaSuccess = (stream) => {
     for(let id in connections) {
         if(id === socketIdRef.current) continue;
 
-       window.localStream.getTracks().forEach(track => {
-    connections[id].addTrack(track, window.localStream);
-  });
+        connections[id].addStream(window.localStream)
 
         connections[id].createOffer().then((description)=> {
             connections[id].setLocalDescription(description)
@@ -163,7 +168,7 @@ let getUserMediaSuccess = (stream) => {
 
         for(let id in connections) {
 
-            connections[id].addTrack(window.localStream)
+            connections[id].addStream(window.localStream)
             connections[id].createOffer()
             .then((description) => {
                 connections[id].setLocalDescription(description)
@@ -235,12 +240,7 @@ let getDisplayMediaSuccess = (stream => {
   for (let id in connections) {
       if(id === socketIdRef.current) continue;
 
-
-     window.localStream.getTracks().forEach(track => {
-    connections[id].addTrack(track, window.localStream);
-  });
-
-
+      connections[id].addStream(window.localStream)
       connections[id].createOffer().then((description)=> [
           connections[id].setLocalDescription(description)
           .then(() => {
@@ -286,7 +286,7 @@ let handleScreen = () => {
 
 // Socket Communication
 let connectToSocketServer = () => {
-  socketRef.current = io.connect(server_url, { secure: true })
+  socketRef.current = io.connect(server_url, { secure: false })
 
   socketRef.current.on('signal', gotMessageFromServer)
 
@@ -307,12 +307,20 @@ let connectToSocketServer = () => {
               // Wait for their ice candidate       
               connections[socketListId].onicecandidate = function (event) {
                   if (event.candidate != null) {
+                    console.log('ICE candidate:', event.candidate);
+
+                    if (event.candidate.type === 'relay') {
+                      console.log('Using TURN server for connection.');
+                  }
                       socketRef.current.emit('signal', socketListId, JSON.stringify({ 'ice': event.candidate }))
+                  } else {
+                      console.log('ICE candidate is null');
                   }
               }
 
+
               // Wait for their video stream
-              connections[socketListId].ontrack = (event) => {
+              connections[socketListId].onaddstream = (event) => {
                   // console.log("BEFORE:", videoRef.current);
                   // console.log("FINDING ID: ", socketListId);
 
@@ -350,14 +358,11 @@ let connectToSocketServer = () => {
 
               // Add the local video stream
               if (window.localStream !== undefined && window.localStream !== null) {
-                window.localStream.getTracks().forEach(track => {
-                  connections[socketListId].addTrack(track, window.localStream);
-                });
-
+                  connections[socketListId].addStream(window.localStream)
               } else {
                   let blackSilence = (...args) => new MediaStream([black(...args), silence()])
                   window.localStream = blackSilence()
-                  connections[socketListId].addTrack(window.localStream)
+                  connections[socketListId].addStream(window.localStream)
               }
           })
 
@@ -366,7 +371,7 @@ let connectToSocketServer = () => {
                   if (id2 === socketIdRef.current) continue
 
                   try {
-                      connections[id2].addTrack(window.localStream)
+                      connections[id2].addStream(window.localStream)
                   } catch (e) { }
 
                   connections[id2].createOffer().then((description) => {
@@ -565,30 +570,22 @@ useEffect(() => {
       </div>
 
       <div className={styles.videoGrid}>
-      <video 
-                ref={localVideoRef} 
-                autoPlay 
-                muted 
-                playsInline 
-                className={styles.localVideo}
-            ></video>
-
+        <video className={styles.localVideo} ref={localVideoRef} autoPlay muted></video>
         <div className={styles.remoteVideos}>
-        {videos.map(({ socketId, stream }) => (
-                <div key={socketId} className={styles.videoTile}>
-                    <video
-                        ref={ref => {
-                            if (ref && stream) {
-                                ref.srcObject = stream;
-                                ref.play().catch(() => {});
-                            }
-                        }}
-                        autoPlay
-                        playsInline
-                        className={styles.remoteVideo}
-                    />
-                </div>
-            ))}
+          {videos.map((video) => (
+            <div key={video.socketId} className={styles.videoTile}>
+              <video
+                data-socket={video.socketId}
+                ref={ref => {
+                  if(ref && video.stream) {
+                    ref.srcObject = video.stream;
+                  }
+                }}
+                autoPlay
+                className={styles.remoteVideo}
+              ></video>
+            </div>
+          ))}
         </div>
       </div>
     </div>}
