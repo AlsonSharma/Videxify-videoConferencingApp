@@ -28,10 +28,10 @@ const login = async(req, res) => {
             await user.save();
 
              res.cookie('token', token, {
+                domain: '.alsonpathwander.com',
+                path: '/',
                 httpOnly: true,
                 sameSite: 'none',
-                path: '/',
-                domain: 'videxify-videoconferencingapp-1.onrender.com',
                 secure: true,
                 maxAge: 3600000 // 1 hour
             });
