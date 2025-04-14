@@ -83,6 +83,15 @@ Have questions about my implementation? Want to discuss web development?
 
 Email: sharmaalson@gmail.com
 
+## Contributing
+
+Contributions are welcome! If you find a bug or want to improve the application, feel free to open an issue or submit a pull request.
+
+## 👨‍💻 Credits
+
+**Developed by:** [Alson Sharma](https://github.com/AlsonSharma)  
+
+
 
 
 
