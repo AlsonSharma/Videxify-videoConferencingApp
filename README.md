@@ -36,21 +36,30 @@
    git clone https://github.com/AlsonSharma/Videxify-videoConferencingApp.git
 
 2. **Install Dependencies**
-   Frontend
-   cd frontend && npm install
+**Frontend**
+```bash
+cd frontend
+npm install
+```
+**Backend**
+```bash
+cd backend
+npm install
+```
 
-#Backend
-cd ..backend && npm install 
-
-3. **Configure Environment
+3. **Configure Environment**
 Create .env files using the .env.example templates
 
-4. **Launch Development Servers
-# Backend
+4. **Launch Development Servers**
+**Backend**
+```bash
 cd backend && npm run dev
+```
 
-# Frontend (in new terminal)
+**Frontend (in new terminal)**
+```bash
 cd frontend && npm run dev
+```
 
 ## 📌 Key Features I Implemented
 
