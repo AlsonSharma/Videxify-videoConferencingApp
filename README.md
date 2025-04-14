@@ -36,8 +36,8 @@
    git clone https://github.com/AlsonSharma/Videxify-videoConferencingApp.git
 
 2. **Install Dependencies**
-# Frontend
-cd frontend && npm install
+   Frontend
+   cd frontend && npm install
 
 #Backend
 cd ..backend && npm install 
