@@ -1,9 +1,8 @@
 # Videxify 🎥  
 **A Personal Video Conferencing Project**  
-*Built with Passion by [Your Name]*
+*Built with Passion by Alson Sharma*
 
 [![Project Demo](https://img.shields.io/badge/Demo-Live_Preview-blue?style=for-the-badge&logo=webcomponentsdotorg)](https://app.alsonpathwander.com/)  
-*Replace with your actual demo link*
 
 ## 🚀 Project Highlights
 - **Personal Implementation** of WebRTC video streaming
